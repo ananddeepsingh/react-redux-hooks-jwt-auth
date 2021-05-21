@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { Router, Switch, Route, Link } from "react-router-dom";
+import { Router, Switch, Route, Link, Redirect } from "react-router-dom";
 
 import "bootstrap/dist/css/bootstrap.min.css";
 import "./App.css";
@@ -19,8 +19,12 @@ import { clearMessage } from "./actions/message";
 import { history } from "./helpers/history";
 
 const App = () => {
+
+  console.log(process.env)
   const [showModeratorBoard, setShowModeratorBoard] = useState(false);
   const [showAdminBoard, setShowAdminBoard] = useState(false);
+  const { isLoggedIn } = useSelector(state => state.auth);
+
 
   const { user: currentUser } = useSelector((state) => state.auth);
   const dispatch = useDispatch();
@@ -32,7 +36,7 @@ const App = () => {
   }, [dispatch]);
 
   useEffect(() => {
-    if (currentUser) {
+    if (currentUser?.roles) {
       setShowModeratorBoard(currentUser.roles.includes("ROLE_MODERATOR"));
       setShowAdminBoard(currentUser.roles.includes("ROLE_ADMIN"));
     }
@@ -43,16 +47,21 @@ const App = () => {
   };
 
   return (
-    <Router history={history}>
+    <Router history={history} >
       <div>
         <nav className="navbar navbar-expand navbar-dark bg-dark">
-          <Link to={"/"} className="navbar-brand">
-            bezKoder
+          <Link to={"/uob/"} className="navbar-brand">
+            TMRW
           </Link>
           <div className="navbar-nav mr-auto">
             <li className="nav-item">
               <Link to={"/home"} className="nav-link">
                 Home
+              </Link>
+            </li>
+            <li className="nav-item">
+              <Link to={"/home"} className="nav-link">
+                Environment -- {process.env.REACT_APP_ENV}
               </Link>
             </li>
 
@@ -113,7 +122,7 @@ const App = () => {
 
         <div className="container mt-3">
           <Switch>
-            <Route exact path={["/", "/home"]} component={Home} />
+            <Route exact path={["/", "/home", "/uob/"]} component={Home} />
             <Route exact path="/login" component={Login} />
             <Route exact path="/register" component={Register} />
             <Route exact path="/profile" component={Profile} />
@@ -123,7 +132,7 @@ const App = () => {
           </Switch>
         </div>
       </div>
-    </Router>
+    </Router >
   );
 };
 

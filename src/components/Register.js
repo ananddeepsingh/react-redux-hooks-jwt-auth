@@ -4,56 +4,55 @@ import { useDispatch, useSelector } from "react-redux";
 import Form from "react-validation/build/form";
 import Input from "react-validation/build/input";
 import CheckButton from "react-validation/build/button";
-import { isEmail } from "validator";
+// import { isEmail } from "validator";
 
 import { register } from "../actions/auth";
 
-const required = (value) => {
-  if (!value) {
-    return (
-      <div className="alert alert-danger" role="alert">
-        This field is required!
-      </div>
-    );
-  }
-};
+// const required = (value) => {
+//   if (!value) {
+//     return (
+//       <div className="alert alert-danger" role="alert">
+//         This field is required!
+//       </div>
+//     );
+//   }
+// };
 
-const validEmail = (value) => {
-  if (!isEmail(value)) {
-    return (
-      <div className="alert alert-danger" role="alert">
-        This is not a valid email.
-      </div>
-    );
-  }
-};
+// const validEmail = (value) => {
+//   if (!isEmail(value)) {
+//     return (
+//       <div className="alert alert-danger" role="alert">
+//         This is not a valid email.
+//       </div>
+//     );
+//   }
+// };
 
-const vusername = (value) => {
-  if (value.length < 3 || value.length > 20) {
-    return (
-      <div className="alert alert-danger" role="alert">
-        The username must be between 3 and 20 characters.
-      </div>
-    );
-  }
-};
+// const vusername = (value) => {
+//   if (value.length < 3 || value.length > 20) {
+//     return (
+//       <div className="alert alert-danger" role="alert">
+//         The username must be between 3 and 20 characters.
+//       </div>
+//     );
+//   }
+// };
 
-const vpassword = (value) => {
-  if (value.length < 6 || value.length > 40) {
-    return (
-      <div className="alert alert-danger" role="alert">
-        The password must be between 6 and 40 characters.
-      </div>
-    );
-  }
-};
+// const vpassword = (value) => {
+//   if (value.length < 6 || value.length > 40) {
+//     return (
+//       <div className="alert alert-danger" role="alert">
+//         The password must be between 6 and 40 characters.
+//       </div>
+//     );
+//   }
+// };
 
-const Register = () => {
+const Register = (props) => {
   const form = useRef();
   const checkBtn = useRef();
 
   const [username, setUsername] = useState("");
-  const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [successful, setSuccessful] = useState(false);
 
@@ -65,10 +64,10 @@ const Register = () => {
     setUsername(username);
   };
 
-  const onChangeEmail = (e) => {
-    const email = e.target.value;
-    setEmail(email);
-  };
+  // const onChangeEmail = (e) => {
+  //   const email = e.target.value;
+  //   setEmail(email);
+  // };
 
   const onChangePassword = (e) => {
     const password = e.target.value;
@@ -81,11 +80,11 @@ const Register = () => {
     setSuccessful(false);
 
     form.current.validateAll();
-
     if (checkBtn.current.context._errors.length === 0) {
-      dispatch(register(username, email, password))
+      dispatch(register(username, password))
         .then(() => {
           setSuccessful(true);
+          props.history.push("/login");
         })
         .catch(() => {
           setSuccessful(false);
@@ -113,11 +112,11 @@ const Register = () => {
                   name="username"
                   value={username}
                   onChange={onChangeUsername}
-                  validations={[required, vusername]}
+                // validations={[required, vusername]}
                 />
               </div>
 
-              <div className="form-group">
+              {/* <div className="form-group">
                 <label htmlFor="email">Email</label>
                 <Input
                   type="text"
@@ -125,9 +124,9 @@ const Register = () => {
                   name="email"
                   value={email}
                   onChange={onChangeEmail}
-                  validations={[required, validEmail]}
+                // validations={[required, validEmail]}
                 />
-              </div>
+              </div> */}
 
               <div className="form-group">
                 <label htmlFor="password">Password</label>
@@ -137,7 +136,7 @@ const Register = () => {
                   name="password"
                   value={password}
                   onChange={onChangePassword}
-                  validations={[required, vpassword]}
+                // validations={[required, vpassword]}
                 />
               </div>
 
@@ -149,7 +148,7 @@ const Register = () => {
 
           {message && (
             <div className="form-group">
-              <div className={ successful ? "alert alert-success" : "alert alert-danger" } role="alert">
+              <div className={successful ? "alert alert-success" : "alert alert-danger"} role="alert">
                 {message}
               </div>
             </div>

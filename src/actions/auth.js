@@ -9,11 +9,15 @@ import {
 
 import AuthService from "../services/auth.service";
 
-export const register = (username, email, password) => (dispatch) => {
-  return AuthService.register(username, email, password).then(
+export const register = (username, password) => (dispatch) => {
+  return AuthService.register(username, password).then(
     (response) => {
+      console.log(response, "register response")
       dispatch({
         type: REGISTER_SUCCESS,
+        payload: {
+          data: response.data
+        }
       });
 
       dispatch({
@@ -48,12 +52,23 @@ export const register = (username, email, password) => (dispatch) => {
 export const login = (username, password) => (dispatch) => {
   return AuthService.login(username, password).then(
     (data) => {
-      dispatch({
-        type: LOGIN_SUCCESS,
-        payload: { user: data },
-      });
+      if (data?.token) {
+        dispatch({
+          type: LOGIN_SUCCESS,
+          payload: {
+            data,
+            token: data.token
+          }
+        });
+        return Promise.resolve();
+      } else {
+        dispatch({
+          type: LOGIN_FAIL,
+          payload: { token: null }
+        });
+        return Promise.reject(data);
+      }
 
-      return Promise.resolve();
     },
     (error) => {
       const message =

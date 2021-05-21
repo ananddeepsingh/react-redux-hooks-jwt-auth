@@ -2,12 +2,14 @@
   "name": "react-redux-hooks-jwt-auth",
   "version": "0.1.0",
   "private": true,
+  "homepage": "/uob/",
   "dependencies": {
     "@testing-library/jest-dom": "^4.2.4",
     "@testing-library/react": "^9.3.2",
     "@testing-library/user-event": "^7.1.2",
     "axios": "^0.20.0",
     "bootstrap": "^4.5.2",
+    "env-cmd": "^10.1.0",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
     "react-redux": "^7.2.1",
@@ -22,7 +24,11 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "start:dev": "env-cmd -f .env.development npm start",
+    "build:sit": "env-cmd -f .env.staging npm run-script build",
+    "build:qa": "env-cmd -f .env.qa npm run-script build",
+    "build:prod": "env-cmd -f .env.production npm run-script build"
   },
   "eslintConfig": {
     "extends": "react-app"
@@ -40,6 +46,6 @@
     ]
   },
   "devDependencies": {
-    "redux-devtools-extension": "^2.13.8"
+    "redux-devtools-extension": "^2.13.9"
   }
 }

@@ -25,6 +25,7 @@ const Login = (props) => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
+  const [errorMsg, setErrorMsg] = useState("");
 
   const { isLoggedIn } = useSelector(state => state.auth);
   const { message } = useSelector(state => state.message);
@@ -45,16 +46,17 @@ const Login = (props) => {
     e.preventDefault();
 
     setLoading(true);
-
     form.current.validateAll();
 
     if (checkBtn.current.context._errors.length === 0) {
+      setErrorMsg('');
       dispatch(login(username, password))
         .then(() => {
           props.history.push("/profile");
-          window.location.reload();
+          // window.location.reload();
         })
-        .catch(() => {
+        .catch((err) => {
+          setErrorMsg(err)
           setLoading(false);
         });
     } else {
@@ -116,6 +118,15 @@ const Login = (props) => {
               </div>
             </div>
           )}
+          {
+            errorMsg && (
+              <div className="form-group">
+                <div className="alert alert-danger" role="alert">
+                  {errorMsg}
+                </div>
+              </div>
+            )
+          }
           <CheckButton style={{ display: "none" }} ref={checkBtn} />
         </Form>
       </div>

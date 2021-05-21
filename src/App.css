@@ -3,6 +3,23 @@ label {
   margin-top: 10px;
 }
 
+img{
+  border-radius: 70px;
+}
+
+.jumbotron table{
+  width: 100%;
+  border: 1;
+}
+.jumbotron table tr{
+  margin: 10px 0;
+  border: 1px dashed #655d5d;
+  display: flex;
+}
+.jumbotron table tr td {
+  padding: 10px;
+}
+
 .card-container.card {
   max-width: 350px !important;
   padding: 40px 40px;
